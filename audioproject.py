@@ -1,9 +1,19 @@
+# TODO: exporting, change the file to .wav and then pass it off to microservice
+# TODO: split root into 2 frames, 1 for task and 1 for a big wall of explanation text about how to use the app
+#heuristic 1/2 (explain cost/benefit of features): covered by tooltips
+#heuristic 3 (let users gather as much information as they want and no more): graphs are hideable if they just want to export or whatever
+#heuristic 4 (keep familiar features available): UI fully prototyped, positions wont change much and the full set of features is available to interact with even if it doesnt work yet
+#heuristic 5 (undo/redo): toolbar in tkinter graph so you can undo graph manipulation, also put in effort to keep the original file intact during conversions
+#heuristic 6 (explicit path through task): ui is laid out linear-ly so you go section by section
+#heuristic 7 (try out different approaches): viewing images both in the application and in popout window for 2 monitor users
+#heuristic 8 (let tinkers tinker mindfully): confirmation for export and exit
+
 from tkinter import *
 from tkinter.ttk import *
 from tkinter import messagebox
 from pydub import *
 from os import *
-from os.path import isfile, join
+from os.path import isfile, join, splitext
 
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg,  
@@ -69,10 +79,13 @@ root.title("Audio Manager")
 
 audiofiles = ["select a file"]
 
-audiofiles = [f for f in listdir(path) if isfile(join(path, f)) and f != "audioproject.py"]
-audiofiles.append(audiofiles[0]) # fixes an issue where tkinter doesnt show the first item in the list
+# get list of all supported audio files
+
+
 
 formats = [ ".mp3", ".aiff", ".ogg", ".flac", ".wav", ".flv", ".mp3"]
+audiofiles = [f for f in listdir(path) if isfile(join(path, f)) and splitext(f)[1] in formats]
+audiofiles.append(audiofiles[0]) # fixes an issue where tkinter doesnt show the first item in the list
 
 # initializing to get these to play nice with tkinter
 selectedFormat = StringVar()
