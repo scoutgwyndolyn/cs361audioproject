@@ -54,9 +54,7 @@ def CreateToolTip(widget, text):
     widget.bind('<Leave>', leave)
 
 def showSpecGram():
-    print(selectedFile.get())
     file = selectedFile.get()
-    print(file)
     sampleRate, samples = wavfile.read(file)
     samples = samples[:,0] # this selects just the left channel since we need mono
     powerSpectrum, freqsFound, time, imageAxis = plt.specgram(samples, sampleRate)
@@ -131,7 +129,9 @@ def exportCallback():
 def showHideAmplitudeGraph():
     if(amplitudePlotFrame.winfo_ismapped()):
         amplitudePlotFrame.grid_forget()
+        amplitudePlotLabel.grid_forget()
     else:
+        amplitudePlotLabel.grid(row=4, column=1)
         amplitudePlotFrame.grid(row=5, column = 1)
 
 exportButton = Button(root, text="Export", command = exportCallback)
@@ -141,8 +141,10 @@ specgramButton = Button(root, text="Display Spectrogram", command = showSpecGram
 specgramButton.grid(row = 3, column = 2)
 amplitudeGraphButton = Button(root, text = "Display Amplitude Graph", command = showHideAmplitudeGraph)
 amplitudeGraphButton.grid(row = 3, column = 1)
-CreateToolTip(inputFileLabel, text = "To add files to this list, add them to the root folder this script is in")
+
+CreateToolTip(inputFileDropdown, text = "To add files to this list, add them to the root folder this script is in")
 CreateToolTip(exportButton, text="This will export the given audio file in the selected format, leaving the original file intact.")
+CreateToolTip(specgramButton, text="This will open the spectrogram view in a new window")
 
 print(audiofiles)
 
